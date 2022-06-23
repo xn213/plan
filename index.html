@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每天计划</title>
+  <style>
+    .form-item:first-child {
+      margin-bottom: 13px;
+    }
+
+    .form-item input {
+      padding: 6px;
+      border: 2px solid #3085f1;
+      border-radius: 3px;
+    }
+
+    .list {
+      /* width: 500px; */
+      border-top: 1px solid #000;
+      margin-top: 21px;
+      padding-top: 21px;
+    }
+
+    .red {
+      color: red;
+    }
+    .one {
+      padding-bottom: 13px;
+    }
+
+    .ba {
+      margin-left: 21px;
+    }
+    .blue {
+      color: blue;
+    }
+
+    .last {
+      width: 358px;
+      margin: 21px 0;
+      padding: 13px;
+      color: #fff;
+      border: 2px solid pink;
+      border-radius: 5px;
+      background: linear-gradient(40deg,
+          #e400ff 0%,
+          #677ef8 50%,
+          #cc00ff 100%);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h3>每天计划：</h3>
+  </header>
+  <section class="section">
+    <div class="form">
+      <div class="form-item">
+        <label for="money">初始金额：</label>
+        <input id="money" min="100" value="5000" onchange="so()" type="number" placeholder="请输入初始金额">
+      </div>
+      <div class="form-item">
+        <label for="day">计划天数：</label>
+        <input id="day" min="1" value="30" onchange="so()" type="number"
+          onkeyup="value=value.replace(/[^\d]/g,'').replace(/^0{1,}/g,'')" placeholder="输入计划天数">
+      </div>
+    </div>
+
+    <div class="last"></div>
+    <!-- 具体计划列表： 到每天的计划： 每手金额及 中后金额 -->
+    <!-- <div class="list"></div> -->
+  </section>
+  <script>
+    let money = 5000  // 初始金额
+    let day = 30    // 投多少天
+    let section = document.querySelector('.section')
+
+    function so(m, d) {
+      let n = money = +document.querySelector('#money')?.value || m || 15161
+      console.log(money);
+      let day = +document.querySelector('#day')?.value || d || 90
+
+      // 每次改变把之前的删除掉
+      let list0 = document.querySelector('.list')
+      if (list0) {
+        section.removeChild(list0)
+      }
+
+      let list = document.createElement('div')
+      list.setAttribute('class', 'list')
+
+      // 计划：
+      for (let i = 1; i <= day; i++) {
+        let tou = (Math.floor(money / 50))
+
+        let shou = document.createElement('div')
+        shou.setAttribute('class', 'shou')
+        shou.innerHTML = `<div class="blue">第${i}天 2点计划：</div> <div class='ba'> ① ${tou} ② ${tou * 2} ③ ${tou * 6} ④ ${tou * 18} ⑤ ${tou * 23}</div>`
+        list.appendChild(shou)
+
+        console.log(`第${i}天计划：\n\n`, `① ${tou}  `, `② ${tou * 2}  `, `③ ${tou * 6}  `, `④ ${tou * 18}  `, `⑤ ${tou * 23}   `,'\n\n')
+
+        // 入 1
+        money += (Math.floor(money / 50) * 0.98)
+
+        let div1 = document.createElement('div')
+        div1.setAttribute('class', 'one')
+        div1.innerHTML = `第${i}天第①次中后为：<span class="red">${money.toFixed(2)}</span>`
+        list.appendChild(div1)
+
+        // console.log(`第${i}天第①次后为：`, money.toFixed(2))
+
+        // 入 2
+        // 计划：
+        let tou2 = (Math.floor(money / 50))
+
+        let ba = document.createElement('div')
+        ba.setAttribute('class', 'shou')
+        ba.innerHTML = `<div class="blue">第${i}天 8点计划一：</div> <div class='ba'> ① ${tou2} &ensp; ② ${tou2 * 2} ③ ${tou2 * 6} ④ ${tou2 * 18} ⑤ ${tou2 * 23}</div>`
+        list.appendChild(ba)
+
+        money += (Math.floor(money / 50) * 0.98)
+
+        let div2 = document.createElement('div')
+        div2.innerHTML = `第${i}天第②次后为：<span class="red">${money.toFixed(2)}</span><br><br>`
+        list.appendChild(div2)
+
+        // console.log(`第${i}天第二次后为：`, money.toFixed(2), '\n\n')
+
+
+        // 入 3
+        // 计划：
+        let tou3 = (Math.floor(money / 50))
+
+        let ba3 = document.createElement('div')
+        ba3.setAttribute('class', 'shou')
+        ba3.innerHTML = `<div class="blue">第${i}天 8点计划二：</div> <div class='ba'> ① ${tou3} ② ${tou3 * 2} ③ ${tou3 * 6} ④ ${tou3 * 18} ⑤ ${tou3 * 23}</div>`
+        list.appendChild(ba3)
+
+        money += (Math.floor(money / 50) * 0.98)
+
+        let div3 = document.createElement('div')
+        div3.innerHTML = `第${i}天第三次后为：<span class="red">${money.toFixed(2)}</span><br><br><hr><br>`
+        list.appendChild(div3)
+
+        // console.log(`第${i}天第三次后为：`, money.toFixed(2), '\n\n')
+
+      }
+
+
+      section.appendChild(list)
+
+      let last = document.querySelector('.last')
+      last.innerHTML = `入金${n}元 第${day}天后累计： ${money.toFixed(2)}元`
+    }
+
+    so(money, day)
+
+  </script>
+</body>
+
+</html>
